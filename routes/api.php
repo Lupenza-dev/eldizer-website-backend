@@ -12,6 +12,7 @@ use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\JourneyController;
 use App\Http\Controllers\CoreValueController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +26,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+// Public routes
+Route::post('/login', [LoginController::class, 'login']);
+
+// Protected routes
+Route::middleware('auth:api')->group(function () {
+    // Auth routes
+    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::get('/me', [LoginController::class, 'me']);
+    
+    // Other protected routes
     // Services
     Route::apiResource('services', ServiceController::class);
     
