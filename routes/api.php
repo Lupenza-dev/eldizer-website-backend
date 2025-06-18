@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [LoginController::class, 'login']);
 
 // Protected routes
-Route::middleware('auth:api')->group(function () {
+//Route::middleware('auth:api')->group(function () {
     // Auth routes
     Route::post('/logout', [LoginController::class, 'logout']);
     Route::get('/me', [LoginController::class, 'me']);
@@ -71,4 +71,4 @@ Route::middleware('auth:api')->group(function () {
     
     // About Us
     Route::apiResource('about-us', AboutUsController::class)->only(['index', 'update']);
-});
+// });
