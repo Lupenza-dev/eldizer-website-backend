@@ -33,7 +33,7 @@ class LoginController extends Controller
         $user->tokens()->delete();
         
         // Create a new token
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('AccessToken')->accessToken;
 
         return response()->json([
             'access_token' => $token,
