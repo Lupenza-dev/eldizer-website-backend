@@ -14,13 +14,14 @@ jobs:
       - name: Deploying to live server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.STAGING_SERVER_SSH_HOST }}
-          username: ${{ secrets.STAGING_SERVER_SSH_USERNAME }}
-          password: ${{ secrets.STAGING_SERVER_SSH_PASSPHRASE }}
+          host: ${{ secrets.MAIN_SERVER_SSH_HOST }}
+          username: ${{ secrets.MAIN_SERVER_SSH_USERNAME }}
+          password: ${{ secrets.MAIN_SERVER_SSH_PASSPHRASE }}
           port: 22
           script: |
             cd /var/www/eldizer-website-backend/
             git checkout -f
             git pull
             php artisan migrate
+            php artisan db:seed
             php artisan o:c
