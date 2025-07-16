@@ -42,14 +42,14 @@ class ServiceController extends BaseController
             'title' => $request->title,
             'content' => $request->content,
             'is_published' => $request->boolean('is_published', true),
-            'created_by' => Auth::id(),
+            'created_by' => 1,
+            // 'created_by' => Auth::id(),
         ]);
 
         // Add media using Spatie Media Library
         if ($request->hasFile('image')) {
-            $service->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('services');
+                $service->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         return $this->sendResponse(

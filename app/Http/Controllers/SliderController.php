@@ -37,6 +37,8 @@ class SliderController extends BaseController
             'subtitle' => 'nullable|string|max:255',
             'button_text' => 'nullable|string|max:50',
             'button_url' => 'nullable|url|max:255',
+            'badge'    => 'nullable|max:255',
+            'features' => 'nullable|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_published' => 'sometimes|boolean',
             'order' => 'sometimes|integer|min:0',
@@ -51,16 +53,18 @@ class SliderController extends BaseController
             'subtitle' => $request->subtitle,
             'button_text' => $request->button_text,
             'button_url' => $request->button_url,
+            'badge'      => $request->badge,
+            'features'   => $request->features,
             'is_published' => $request->boolean('is_published', true),
             'order' => $request->order ?? 0,
-            'created_by' => Auth::id(),
+            'created_by' => 1
+            // 'created_by' => Auth::id(),
         ]);
 
         // Add media using Spatie Media Library
         if ($request->hasFile('image')) {
-            $slider->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('sliders');
+            $slider->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         return $this->sendResponse(
@@ -87,10 +91,12 @@ class SliderController extends BaseController
     public function update(Request $request, Slider $slider): JsonResponse
     {
         $validation = $this->validateRequest($request, [
-            'title' => 'sometimes|required|string|max:255',
+            'title' => 'required|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'button_text' => 'nullable|string|max:50',
             'button_url' => 'nullable|url|max:255',
+            'badge'    => 'nullable|max:255',
+            'features' => 'nullable|max:255',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_published' => 'sometimes|boolean',
             'order' => 'sometimes|integer|min:0',
@@ -100,16 +106,15 @@ class SliderController extends BaseController
             return $this->sendError('Validation error', $validation['errors'], 422);
         }
 
-        $data = $request->only(['title', 'subtitle', 'button_text', 'button_url', 'is_published', 'order']);
+        $data = $request->only(['title', 'subtitle', 'button_text', 'button_url', 'is_published', 'order','badge','features']);
 
         // Handle image update using Spatie Media Library
         if ($request->hasFile('image')) {
             // Clear existing media in the 'sliders' collection
             $slider->clearMediaCollection('sliders');
             // Add new media
-            $slider->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('sliders');
+            $slider->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         $slider->update($data);

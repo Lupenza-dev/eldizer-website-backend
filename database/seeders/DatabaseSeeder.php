@@ -16,10 +16,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('Admin@123'),
+        // User::factory()->create([
+        //     'name' => 'Admin Admin',
+        //     'email' => 'admin@gmail.com',
+        //     'password' => Hash::make('Admin@123'),
+        // ]);
+
+        $this->call([
+         //   NewsCategorySeeder::class,
+            FaqCategorySeeder::class,
         ]);
     }
 }

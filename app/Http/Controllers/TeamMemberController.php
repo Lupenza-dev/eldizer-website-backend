@@ -34,13 +34,10 @@ class TeamMemberController extends BaseController
     public function store(Request $request): JsonResponse
     {
         $validation = $this->validateRequest($request, [
-            'name' => 'required|string|max:255',
+            'name'     => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'bio' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-            'social_links' => 'sometimes|array',
-            'social_links.*.platform' => 'required_with:social_links|string|max:50',
-            'social_links.*.url' => 'required_with:social_links|url|max:255',
+            'bio'      => 'nullable|string',
+            'image'    => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_published' => 'sometimes|boolean',
             'order' => 'sometimes|integer|min:0',
         ]);
@@ -53,17 +50,16 @@ class TeamMemberController extends BaseController
             'name' => $request->name,
             'position' => $request->position,
             'bio' => $request->bio,
-            'social_links' => $request->social_links ? json_encode($request->social_links) : null,
             'is_published' => $request->boolean('is_published', true),
             'order' => $request->order ?? 0,
-            'created_by' => Auth::id(),
+            'created_by' => 1,
+            // 'created_by' => Auth::id(),
         ]);
 
         // Add media using Spatie Media Library
         if ($request->hasFile('image')) {
-            $teamMember->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('team-members');
+            $teamMember->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         return $this->sendResponse(
@@ -94,11 +90,6 @@ class TeamMemberController extends BaseController
             'position' => 'sometimes|required|string|max:255',
             'bio' => 'nullable|string',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
-            'social_links' => 'sometimes|array',
-            'social_links.*.platform' => 'required_with:social_links|string|max:50',
-            'social_links.*.url' => 'required_with:social_links|url|max:255',
-            'is_published' => 'sometimes|boolean',
-            'order' => 'sometimes|integer|min:0',
         ]);
 
         if ($validation !== true) {
@@ -116,9 +107,8 @@ class TeamMemberController extends BaseController
             // Clear existing media in the 'team-members' collection
             $teamMember->clearMediaCollection('team-members');
             // Add new media
-            $teamMember->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('team-members');
+            $teamMember->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         $teamMember->update($data);

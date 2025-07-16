@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Testimonial extends Model
+class Testimonial extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes,InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -16,6 +18,7 @@ class Testimonial extends Model
         'content',
         'is_published',
         'created_by',
+        'rating'
     ];
 
     protected $casts = [

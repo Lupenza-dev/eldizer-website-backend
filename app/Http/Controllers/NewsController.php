@@ -8,6 +8,8 @@ use App\Models\NewsCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log as FacadesLog;
+use Log;
 
 class NewsController extends BaseController
 {
@@ -34,9 +36,9 @@ class NewsController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'news_category_id' => 'required|exists:news_categories,id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-            'is_published' => 'sometimes|boolean',
+            'news_category_id' => 'required',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            // 'is_published' => 'sometimes|boolean',
         ]);
 
         if ($validation !== true) {
@@ -46,16 +48,17 @@ class NewsController extends BaseController
         $news = News::create([
             'title' => $request->title,
             'content' => $request->content,
-            'news_category_id' => $request->news_category_id,
-            'is_published' => $request->boolean('is_published', true),
-            'created_by' => Auth::id(),
+            'category_id' => $request->news_category_id,
+            'is_published' => true,
+            'created_by' => 1,
         ]);
 
         // Add media using Spatie Media Library
         if ($request->hasFile('image')) {
-            $news->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('news');
+            // $news->addMediaFromRequest('image')
+            //     ->withResponsiveImages()
+            //     ->toMediaCollection('news');
+                $news->addMedia($request['image'])->toMediaCollection('images');
         }
 
         return $this->sendResponse(

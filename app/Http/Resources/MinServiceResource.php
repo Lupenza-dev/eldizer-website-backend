@@ -19,6 +19,7 @@ class MinServiceResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'is_published' => $this->is_published,
+            'image_url' => $this->getFirstMediaUrl('images'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->whenLoaded('creator', function () {

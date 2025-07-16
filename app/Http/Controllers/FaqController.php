@@ -34,7 +34,7 @@ class FaqController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category_id' => 'required|exists:faq_categories,id',
+            'category_id' => 'required',
             'is_published' => 'sometimes|boolean',
         ]);
 
@@ -47,7 +47,8 @@ class FaqController extends BaseController
             'content' => $request->content,
             'category_id' => $request->category_id,
             'is_published' => $request->boolean('is_published', true),
-            'created_by' => Auth::id(),
+            'created_by' => 1,
+            // 'created_by' => Auth::id(),
         ]);
 
         return $this->sendResponse(
@@ -76,7 +77,7 @@ class FaqController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required|string',
-            'category_id' => 'sometimes|required|exists:faq_categories,id',
+            'category_id' => 'sometimes|required',
             'is_published' => 'sometimes|boolean',
         ]);
 

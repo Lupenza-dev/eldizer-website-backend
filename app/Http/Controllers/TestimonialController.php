@@ -34,6 +34,7 @@ class TestimonialController extends BaseController
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
             'content' => 'required|string',
+            'rating' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_published' => 'sometimes|boolean',
         ]);
@@ -46,15 +47,16 @@ class TestimonialController extends BaseController
             'name' => $request->name,
             'position' => $request->position,
             'content' => $request->content,
+            'rating' => $request->rating,
             'is_published' => $request->boolean('is_published', true),
-            'created_by' => Auth::id(),
+            'created_by' => 1,
+            // 'created_by' => Auth::id(),
         ]);
 
         // Add media using Spatie Media Library
         if ($request->hasFile('image')) {
-            $testimonial->addMediaFromRequest('image')
-                ->withResponsiveImages()
-                ->toMediaCollection('testimonials');
+            $testimonial->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         return $this->sendResponse(

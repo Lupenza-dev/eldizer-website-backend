@@ -34,6 +34,8 @@ class MinServiceController extends BaseController
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'is_published' => 'sometimes|boolean',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+
         ]);
 
         if ($validation !== true) {
@@ -44,8 +46,14 @@ class MinServiceController extends BaseController
             'title' => $request->title,
             'content' => $request->content,
             'is_published' => $request->boolean('is_published', true),
-            'created_by' => Auth::id(),
+            'created_by' => 1
+            // 'created_by' => Auth::id(),
         ]);
+
+        if ($request->hasFile('image')) {
+            $minService->addMedia($request['image'])->toMediaCollection('images');
+
+        }
 
         return $this->sendResponse(
             new MinServiceResource($minService->load('creator')),
@@ -74,10 +82,21 @@ class MinServiceController extends BaseController
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required|string',
             'is_published' => 'sometimes|boolean',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
+
+
         ]);
 
         if ($validation !== true) {
             return $this->sendError('Validation error', $validation['errors'], 422);
+        }
+
+        if ($request->hasFile('image')) {
+            // Clear existing media in the 'services' collection
+            $minService->clearMediaCollection('images');
+            // Add new media
+            $minService->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         $minService->update($request->only(['title', 'content', 'is_published']));
