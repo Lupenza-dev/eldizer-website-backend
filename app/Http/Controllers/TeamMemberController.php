@@ -38,7 +38,6 @@ class TeamMemberController extends BaseController
             'position' => 'required|string|max:255',
             'bio'      => 'nullable|string',
             'image'    => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-            'is_published' => 'sometimes|boolean',
             'order' => 'sometimes|integer|min:0',
         ]);
 
@@ -96,7 +95,7 @@ class TeamMemberController extends BaseController
             return $this->sendError('Validation error', $validation['errors'], 422);
         }
 
-        $data = $request->only(['name', 'position', 'bio', 'is_published', 'order']);
+        $data = $request->only(['name', 'position', 'bio']);
 
         if ($request->has('social_links')) {
             $data['social_links'] = json_encode($request->social_links);
