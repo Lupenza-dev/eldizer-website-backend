@@ -40,27 +40,33 @@ class AboutUsController extends BaseController
         }
 
         $validation = $this->validateRequest($request, [
-            'vision' => 'required|string',
+            'vision'  => 'required|string',
             'mission' => 'required|string',
             'content' => 'required|string',
+            'values'   => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_published' => 'sometimes|boolean',
+            // 'is_published' => 'sometimes|boolean',
         ]);
 
         if ($validation !== true) {
             return $this->sendError('Validation error', $validation['errors'], 422);
         }
 
-        $imagePath = $this->uploadImage($request->file('image'), 'about-us');
-
         $aboutUs = AboutUs::create([
             'vision' => $request->vision,
             'mission' => $request->mission,
             'content' => $request->content,
-            'image' => $imagePath,
+            'values' => $request->values,
             'is_published' => $request->boolean('is_published', true),
+            'created_by' => 1,
             'created_by' => Auth::id(),
         ]);
+
+         // Add media using Spatie Media Library
+         if ($request->hasFile('image')) {
+            $aboutUs->addMedia($request['image'])->toMediaCollection('images');
+
+        }
 
         return $this->sendResponse(
             new AboutUsResource($aboutUs->load('creator')),
@@ -89,8 +95,9 @@ class AboutUsController extends BaseController
             'vision' => 'sometimes|required|string',
             'mission' => 'sometimes|required|string',
             'content' => 'sometimes|required|string',
+            'values' => 'sometimes|required|string',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_published' => 'sometimes|boolean',
+            // 'is_published' => 'sometimes|boolean',
         ]);
 
         if ($validation !== true) {
@@ -98,14 +105,15 @@ class AboutUsController extends BaseController
         }
 
 
-        $data = $request->only(['vision', 'mission', 'content', 'is_published']);
+        $data = $request->only(['vision', 'mission', 'content', 'values']);
 
+        // Handle image update using Spatie Media Library
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($aboutUs->image && Storage::exists('public/' . $aboutUs->image)) {
-                Storage::delete('public/' . $aboutUs->image);
-            }
-            $data['image'] = $this->uploadImage($request->file('image'), 'about-us');
+            // Clear existing media in the 'testimonials' collection
+            $aboutUs->clearMediaCollection('images');
+            // Add new media
+            $aboutUs->addMedia($request['image'])->toMediaCollection('images');
+
         }
 
         $aboutUs->update($data);
