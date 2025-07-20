@@ -20,6 +20,7 @@ class TeamMember extends Model implements HasMedia
         'social_links',
         'is_published',
         'created_by',
+        'bio'
     ];
 
     protected $casts = [
