@@ -34,7 +34,7 @@ class CoreValueController extends BaseController
             'name' => 'required|string|max:255',
             'icon' => 'required|string|max:100',
             'content' => 'required|string',
-            'is_published' => 'sometimes|boolean',
+            // 'is_published' => 'sometimes|boolean',
         ]);
 
         if ($validation !== true) {
@@ -46,7 +46,8 @@ class CoreValueController extends BaseController
             'icon' => $request->icon,
             'content' => $request->content,
             'is_published' => $request->boolean('is_published', true),
-            'created_by' => Auth::id(),
+            'created_by' => 1,
+            // 'created_by' => Auth::id(),
         ]);
 
         return $this->sendResponse(
@@ -76,14 +77,14 @@ class CoreValueController extends BaseController
             'name' => 'sometimes|required|string|max:255',
             'icon' => 'sometimes|required|string|max:100',
             'content' => 'sometimes|required|string',
-            'is_published' => 'sometimes|boolean',
+            // 'is_published' => 'sometimes|boolean',
         ]);
 
         if ($validation !== true) {
             return $this->sendError('Validation error', $validation['errors'], 422);
         }
 
-        $coreValue->update($request->only(['name', 'icon', 'content', 'is_published']));
+        $coreValue->update($request->only(['name', 'icon', 'content']));
 
         return $this->sendResponse(
             new CoreValueResource($coreValue->load('creator')),
