@@ -15,7 +15,7 @@ class HomePageAboutSeeder extends Seeder
     public function run(): void
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('about_us')->truncate();
+        DB::table('home_page_abouts')->truncate();
 
         $categories = [
             [
