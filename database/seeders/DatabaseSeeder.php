@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
            NewsCategorySeeder::class,
            FaqCategorySeeder::class,
-           //AboutUsSeeder::class,
+           AboutUsSeeder::class,
            HomePageAboutSeeder::class,
         ]);
     }
