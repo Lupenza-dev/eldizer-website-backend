@@ -13,6 +13,7 @@ use App\Http\Controllers\JourneyController;
 use App\Http\Controllers\CoreValueController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomePageAboutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,4 +72,5 @@ Route::post('/login', [LoginController::class, 'login']);
     
     // About Us
     Route::apiResource('about-us', AboutUsController::class)->only(['index', 'update']);
+    Route::apiResource('home-about-us', HomePageAboutController::class)->only(['index', 'update']);
 // });

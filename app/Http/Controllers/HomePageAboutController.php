@@ -20,10 +20,10 @@ class HomePageAboutController extends BaseController
     {
         $minServices = HomePageAbout::with(['creator'])
             ->latest()
-            ->paginate(10);
+            ->first();
 
         return $this->sendResponse(
-            HomePageAboutResource::collection($minServices),
+            new HomePageAboutResource($minServices),
             'Data retrieved successfully.'
         );
     }
