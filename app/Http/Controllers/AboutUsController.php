@@ -108,11 +108,12 @@ class AboutUsController extends BaseController
             return $this->sendError('Validation error', $validation['errors'], 422);
         }
 
-
+        $aboutUs =AboutUs::first();
         $data = $request->only(['vision', 'mission', 'content', 'values']);
 
         // Handle image update using Spatie Media Library
         if ($request->hasFile('image')) {
+            Log::info("Image Ipo");
             // Clear existing media in the 'testimonials' collection
             $aboutUs->clearMediaCollection('images');
             // Add new media
