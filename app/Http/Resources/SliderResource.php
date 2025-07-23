@@ -26,7 +26,7 @@ class SliderResource extends JsonResource
             'button_url' => $this->button_url,
             'button_url' => $this->button_url,
             'badge' => $this->badge,
-            'badge_1' =>$this->extractBetweenMarkers($this->badge,"@"),
+            'badge_1' =>$this->extractBetweenMarkers($this->badge,"#"),
             'badge_2' =>$this->extractBetweenMarkers($this->badge,"@"),
             'features' => $this->features,
             'all_features' => explode(',',$this->features),
