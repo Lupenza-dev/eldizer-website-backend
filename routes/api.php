@@ -81,5 +81,5 @@ Route::group(['prefix'=>'website'],function(){
     Route::get('about-us',[HomeController::class,'aboutUs']);
     Route::get('get-news',[HomeController::class,'getAllNews']);
     Route::get('faq',[HomeController::class,'getFaq']);
-    Route::get('get-news',[HomeController::class,'getServices']);
+    Route::get('get-min-service',[HomeController::class,'getServices']);
 });
