@@ -20,6 +20,7 @@ class AboutUsResource extends JsonResource
             'mission' => $this->mission,
             'content' => $this->content,
             'values' => $this->values,
+            'all_values' => explode(',',$this->values),
             'image_url' => $this->getFirstMediaUrl('images'),
             'is_published' => $this->is_published,
             'created_at' => $this->created_at,
