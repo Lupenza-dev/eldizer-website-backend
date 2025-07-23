@@ -19,6 +19,8 @@ class SliderResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'title_slider'     =>$this->extractBetweenMarkers($this->title,"#"),
+            'title_slider_sub' =>$this->extractBetweenMarkers($this->title,"@"),
             'subtitle' => $this->subtitle,
             'button_text' => $this->button_text,
             'button_url' => $this->button_url,
@@ -37,5 +39,20 @@ class SliderResource extends JsonResource
                 ];
             }),
         ];
+    }
+    
+
+    function extractBetweenMarkers($text, $marker) {
+        // Escape the marker for regex (in case it's a special character)
+        $escapedMarker = preg_quote($marker, '/');
+    
+        // Build the regex pattern dynamically
+        $pattern = "/{$escapedMarker}(.*?){$escapedMarker}/";
+    
+        if (preg_match($pattern, $text, $matches)) {
+            return $matches[1];  // Return the content inside markers
+        }
+    
+        return null;  // Return null if not found
     }
 }
