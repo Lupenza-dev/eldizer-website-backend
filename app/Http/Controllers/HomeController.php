@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AboutUsResource;
 use App\Http\Resources\CoreValueResource;
+use App\Http\Resources\FaqCategoryResource;
 use App\Http\Resources\FaqResource;
 use App\Http\Resources\HomePageAboutResource;
 use App\Http\Resources\MinServiceResource;
@@ -15,6 +16,7 @@ use App\Http\Resources\TestimonialResource;
 use App\Models\AboutUs;
 use App\Models\CoreValue;
 use App\Models\Faq;
+use App\Models\FaqCategory;
 use App\Models\HomePageAbout;
 use App\Models\MinService;
 use App\Models\News;
@@ -93,9 +95,11 @@ class HomeController extends Controller
     public function getFaq(){
         try {
             $faqs = Faq::with(['category', 'creator'])->latest()->get();
+            $faq_categories =FaqCategory::whereHas('faqs')->get();
 
             return response()->json([
-                'faqs'         =>FaqResource::collection($faqs)
+                // 'faqs'         =>FaqResource::collection($faqs)
+                'faq_categories'  =>FaqCategoryResource::collection($faq_categories)
             ],200);
 
         } catch (\Throwable $th) {

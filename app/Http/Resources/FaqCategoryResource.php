@@ -24,6 +24,7 @@ class FaqCategoryResource extends JsonResource
             'created_by' => $this->whenLoaded('creator', function () {
                 return $this->creator->name;
             }),
+            'faqs'      =>FaqResource::collection($this->faqs)
         ];
     }
 }
