@@ -31,7 +31,7 @@ class HomeController extends Controller
             $sliders = Slider::with(['creator'])->latest()->get();
             $minServices = HomePageAbout::with(['creator'])->limit(4)->latest()->first();
             $services = Service::latest()->get();
-            $minServices = MinService::limit(4)->latest()->get();
+            // $minServices = MinService::with(['creator'])->limit(4)->latest()->get();
             $testimonials = Testimonial::with(['creator'])->limit(3)->get();
             $news = News::with(['category', 'creator'])->limit(3)->get();
 
@@ -39,7 +39,7 @@ class HomeController extends Controller
                 'sliders'    =>SliderResource::collection($sliders),
                 'home_about' =>new HomePageAboutResource($minServices),
                 'services'   =>ServiceResource::collection($services),
-                'min_services' =>MinServiceResource::collection($minServices),
+                // 'min_services' =>MinServiceResource::collection($minServices),
                 'testmonials'  =>TestimonialResource::collection($testimonials),
                 'news'         =>NewsResource::collection($news)
             ],200);
@@ -96,6 +96,23 @@ class HomeController extends Controller
 
             return response()->json([
                 'faqs'         =>FaqResource::collection($faqs)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' =>false,
+                'message' =>'Failed to fetch data',
+                'error' =>$th->getMessage()
+            ],422);
+        }
+    }
+
+    public function getServices(){
+        try {
+            $minServices = MinService::with(['creator'])->latest()->get();
+
+            return response()->json([
+                'min_services' =>MinServiceResource::collection($minServices),
             ],200);
 
         } catch (\Throwable $th) {
