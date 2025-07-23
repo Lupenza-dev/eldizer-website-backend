@@ -57,7 +57,7 @@ class HomeController extends Controller
         try {
             $aboutUs = AboutUs::first();
             $coreValues = CoreValue::with(['creator'])->latest()->get();
-            $teamMembers = TeamMember::with(['creator'])->latest()->get();
+            $teamMembers = TeamMember::with(['creator'])->oldest()->get();
 
             return response()->json([
                 'about'       =>new AboutUsResource($aboutUs->load('creator')),
