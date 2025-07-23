@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->longText('icon')->change();
+            $table->text('icon')->nullable()->change();
         });
         Schema::table('min_services', function (Blueprint $table) {
-            $table->longText('icon')->change();
+            $table->text('icon')->nullable()->change();
         });
     }
     /**
@@ -24,11 +24,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->string('icon')->change();
+            $table->string('icon')->nullable()->change();
         });
 
         Schema::table('min_services', function (Blueprint $table) {
-            $table->string('icon')->change();
+            $table->string('icon')->nullable()->change();
         });
     }
 };
