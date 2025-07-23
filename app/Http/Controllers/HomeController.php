@@ -47,7 +47,8 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' =>false,
-                'message' =>'Failed to fetch data'
+                'message' =>'Failed to fetch data',
+                'error' =>$th->getMessage()
             ],422);
         }
     }
@@ -67,7 +68,8 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' =>false,
-                'message' =>'Failed to fetch data'
+                'message' =>'Failed to fetch data',
+                'error' =>$th->getMessage()
             ],422);
         }
     }
@@ -82,7 +84,8 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' =>false,
-                'message' =>'Failed to fetch data'
+                'message' =>'Failed to fetch data',
+                'error' =>$th->getMessage()
             ],422);
         }
     }
@@ -98,7 +101,8 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' =>false,
-                'message' =>'Failed to fetch data'
+                'message' =>'Failed to fetch data',
+                'error' =>$th->getMessage()
             ],422);
         }
     }
