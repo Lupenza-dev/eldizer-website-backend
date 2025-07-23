@@ -31,7 +31,7 @@ class HomeController extends Controller
             $sliders = Slider::with(['creator'])->latest()->get();
             $minServices = HomePageAbout::with(['creator'])->limit(4)->latest()->first();
             $services = Service::latest()->get();
-            $minServices = MinService::with(['creator'])->limit(4)->latest()->get();
+            $minServices = MinService::limit(4)->latest()->get();
             $testimonials = Testimonial::with(['creator'])->limit(3)->get();
             $news = News::with(['category', 'creator'])->limit(3)->get();
 
