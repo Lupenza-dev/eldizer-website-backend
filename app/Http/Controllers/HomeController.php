@@ -95,11 +95,11 @@ class HomeController extends Controller
     public function getFaq(){
         try {
             $faqs = Faq::with(['category', 'creator'])->latest()->get();
-            $faq_categories =FaqCategory::whereHas('faqs')->get();
+            //$faq_categories =FaqCategory::whereHas('faqs')->get();
 
             return response()->json([
-                // 'faqs'         =>FaqResource::collection($faqs)
-                'faq_categories'  =>FaqCategoryResource::collection($faq_categories)
+                 'faqs'         =>FaqResource::collection($faqs)
+                // 'faq_categories'  =>FaqCategoryResource::collection($faq_categories)
             ],200);
 
         } catch (\Throwable $th) {

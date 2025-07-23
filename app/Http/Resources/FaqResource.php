@@ -18,6 +18,7 @@ class FaqResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
+            'category_name' => $this->category?->name,
             'category' => $this->whenLoaded('category', function () {
                 return [
                     'id' => $this->category->id,
