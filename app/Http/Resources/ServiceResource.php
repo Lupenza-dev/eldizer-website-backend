@@ -20,6 +20,7 @@ class ServiceResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
+            'icon'    => $this->icon,
             'image_url' => $this->getFirstMediaUrl('images'),
             // 'image_thumb' => $media ? $media->getUrl('thumb') : null,
             // 'image_medium' => $media ? $media->getUrl('medium') : null,

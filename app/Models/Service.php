@@ -17,6 +17,7 @@ class Service extends Model implements HasMedia
         'content',
         'is_published',
         'created_by',
+        'icon'
     ];
 
     protected $casts = [

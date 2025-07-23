@@ -30,6 +30,7 @@ class ServiceController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'icon' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_published' => 'sometimes|boolean',
         ]);
@@ -41,6 +42,7 @@ class ServiceController extends BaseController
         $service = Service::create([
             'title' => $request->title,
             'content' => $request->content,
+            'icon'    => $request->icon,
             'is_published' => $request->boolean('is_published', true),
             'created_by' => 1,
             // 'created_by' => Auth::id(),
@@ -75,6 +77,7 @@ class ServiceController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required|string',
+            'icon'    => 'sometimes|required|string',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_published' => 'sometimes|boolean',
         ]);
@@ -83,7 +86,7 @@ class ServiceController extends BaseController
             return $this->sendError('Validation error', $validation['errors'], 422);
         }
 
-        $data = $request->only(['title', 'content', 'is_published']);
+        $data = $request->only(['title', 'content', 'is_published','icon']);
 
         // Handle image update using Spatie Media Library
         if ($request->hasFile('image')) {

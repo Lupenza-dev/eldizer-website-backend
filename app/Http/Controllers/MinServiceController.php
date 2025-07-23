@@ -33,6 +33,7 @@ class MinServiceController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'icon' => 'required|string',
             'is_published' => 'sometimes|boolean',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
 
@@ -45,6 +46,7 @@ class MinServiceController extends BaseController
         $minService = MinService::create([
             'title' => $request->title,
             'content' => $request->content,
+            'icon' => $request->icon,
             'is_published' => $request->boolean('is_published', true),
             'created_by' => 1
             // 'created_by' => Auth::id(),
@@ -81,6 +83,7 @@ class MinServiceController extends BaseController
         $validation = $this->validateRequest($request, [
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required|string',
+            'icon' => 'sometimes|required|string',
             'is_published' => 'sometimes|boolean',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
 
@@ -99,7 +102,7 @@ class MinServiceController extends BaseController
 
         }
 
-        $minService->update($request->only(['title', 'content', 'is_published']));
+        $minService->update($request->only(['title', 'content', 'is_published','icon']));
 
         return $this->sendResponse(
             new MinServiceResource($minService->load('creator')),
